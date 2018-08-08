@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid" style="background: #eeeeee; padding-top: 10px;">
+    <div class="row" style="    background-color: #ffffff;">
+        <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+            <h1></h1>
+
+                <ul class="nav nav-tabs">
+                  <li class="active"><a data-toggle="tab" href="#zagr">Загрузка данных</a></li>
+                  <li><a data-toggle="tab" href="#dop">Дополнительно</a></li>
+                </ul>
+
+                <div class="tab-content">
+                  <div id="zagr" class="tab-pane fade in active">
+                        <form id="form_upload" method="POST" enctype="multipart/form-data">
+                             <div class="form-group">
+                                <!--<label for="otsaldk">Укажите файл для загрузки</label>
+                                <input type="file" id="id_otsaldk">
+                                <p class="help-block">otsaldk.dbf</p>-->
+                                 {{ form }}
+                              </div>
+                              <button id="b_zagr" class="btn btn-default">Загрузить</button>
+                              <p class="help-block" id="mess"></p>
+                        </form>
+
+
+                  </div>
+                  <div id="dop" class="tab-pane fade">
+                  </div>
+
+                </div>
+
+
+
+        </main>
+    </div>
+</div>
+
+
+{% endblock %}
+
+ {% block js %}
+    $("#id_otsaldk").change(function(){
+        $("#b_zagr").attr({disabled: 'disabled'});
+        $("#mess").html("");
+        var options = {
+              url: '/upload/otsaldk',
+              success: function(data) {
+                $("#mess").html(data);
+                if(data!="File is not loaded."){
+                    alert(data);
+                    $("#b_zagr").removeAttr('disabled');
+                }
+                else
+                {
+                    alert("File is not loaded.");
+                }
+              }
+            };
+        //alert($(this).val());
+        $("#form_upload").ajaxSubmit(options);
+
+    });
+{% endblock %}
